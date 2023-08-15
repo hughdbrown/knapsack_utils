@@ -8,4 +8,3 @@ authors = ["Hugh Brown <hughdbrown@gmail.com>"]
 
 [dependencies]
 prng = { git = "https://github.com/hughdbrown/prng.git" }
-

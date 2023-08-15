@@ -23,7 +23,7 @@ pub fn make_items(
     min_value: u64, max_value: u64,
     min_weight: u64, max_weight: u64,
 ) -> Vec<Item> {
-    let mut items: Vec<Item> = Vec::with_capacity(num_items);
+    let mut items: Vec<Item> = vec![];
     for _ in 0..num_items {
         items.push(make_rand_item(
             prng,
