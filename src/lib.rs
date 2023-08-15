@@ -42,6 +42,14 @@ pub fn make_items(
     items
 }
 
+pub fn select_items(items: &[Item], selected: &[usize]) -> Vec<Item> {
+    items.iter()
+        .enumerate()
+        .filter(|x: &(usize, &Item)| selected.contains(&x.0))
+        .map(|x: (usize, &Item)| x.1.clone())
+        .collect::<Vec::<_>>()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
