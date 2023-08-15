@@ -6,6 +6,14 @@ pub struct Item {
     pub weight: usize,
 }
 
+pub fn sum_values(items: &[Item]) -> u64 {
+    items.iter().map(|x| x.value).sum()
+}
+
+pub fn sum_weights(items: &[Item]) -> usize {
+    items.iter().map(|x| x.weight).sum()
+}
+
 pub fn make_rand_item(
     prng: &mut Prng,
     min_value: u64, max_value: u64,
