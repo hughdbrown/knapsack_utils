@@ -1,5 +1,7 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+#[derive(Debug, Clone)]
+pub struct Item {
+    pub value: u64,
+    pub weight: usize,
 }
 
 #[cfg(test)]
