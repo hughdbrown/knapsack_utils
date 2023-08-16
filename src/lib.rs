@@ -8,6 +8,14 @@ pub struct Item {
     pub weight: usize,
 }
 
+pub sort_by_density(items: &[Item]) -> Vec<Item> {
+    items.clone() // Necessary to clone?
+        .map(|x: Item| (f64(x.value) / f64(x.weight)), x) // Make tuples of float64 and Item
+        .sort(|t1, t2| t2.0.partialcmp(t1.0)) // Sort by float64 value descending
+        .map(|t: (f64, Item)| t.1) // Drop the float64
+        .collect::<Vec::<Item>>() // Collect the ordered Items
+}
+
 pub fn sum_values(items: &[Item]) -> u64 {
     items.iter().map(|x| x.value).sum()
 }
