@@ -16,7 +16,7 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
     }
 
     tmp_items.sort_by(|t1, t2| t2.0.partial_cmp(&t1.0).unwrap()); // Sort by float64 value descending
-    println!("{:?}", tmp_items);
+    // println!("{:?}", tmp_items);
 
     tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
