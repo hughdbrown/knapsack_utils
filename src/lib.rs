@@ -2,16 +2,23 @@ use prng::Prng;
 
 pub type SearchResult = (Vec<usize>, usize, u64);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Item {
     pub value: u64,
     pub weight: usize,
 }
 
-pub sort_by_density(items: &[Item]) -> Vec<Item> {
-    items.clone() // Necessary to clone?
-        .map(|x: Item| (f64(x.value) / f64(x.weight)), x) // Make tuples of float64 and Item
-        .sort(|t1, t2| t2.0.partialcmp(t1.0)) // Sort by float64 value descending
+pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
+    let mut tmp_items: Vec<(f64, Item)> = vec![];
+    for item in items.iter() {
+        let density: f64 = (item.value as f64) / (item.weight as f64);
+        tmp_items.push((density, item.clone())); // Make tuples of float64 and Item
+    }
+
+    tmp_items.sort_by(|t1, t2| t2.0.partial_cmp(&t1.0).unwrap()); // Sort by float64 value descending
+    println!("{:?}", tmp_items);
+
+    tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
         .collect::<Vec::<Item>>() // Collect the ordered Items
 }
@@ -65,8 +72,17 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn density_1() {
+        let items: Vec<Item> = vec![
+            Item {weight:1, value:3}, // density=3
+            Item {weight:1, value:1}, // density=1
+            Item {weight:6, value:1}, // density=0.16
+            Item {weight:1, value:6}, // density=6
+        ];
+        let sorted = sort_by_density(&items);
+        let correct: Vec<usize> = vec![3, 0, 1, 2];
+        for (i, ix) in correct.iter().enumerate() {
+            assert!(sorted[i] == items[*ix]);
+        }
     }
 }
