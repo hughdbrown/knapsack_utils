@@ -1,5 +1,7 @@
 use prng::Prng;
 
+pub type SearchResult = (Vec<usize>, usize, u64);
+
 #[derive(Debug, Clone)]
 pub struct Item {
     pub value: u64,
