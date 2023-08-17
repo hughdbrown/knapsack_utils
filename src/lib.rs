@@ -2,7 +2,7 @@ use prng::Prng;
 
 pub type SearchResult = (Vec<usize>, usize, u64);
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd)]
 pub struct Item {
     pub value: u64,
     pub weight: usize,
@@ -22,7 +22,9 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
 
     tmp_items.sort_by(|t1: &(f64, Item), t2: &(f64, Item)| {
         // Sort by float64 value descending
-        t2.0.partial_cmp(&t1.0).unwrap()
+        let density_1: f64 = t1.0;
+        let density_2: f64 = t2.0;
+        density_2.partial_cmp(&density_1).unwrap()
     });
 
     tmp_items.into_iter()
