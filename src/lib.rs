@@ -15,8 +15,10 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
         tmp_items.push((density, item.clone())); // Make tuples of float64 and Item
     }
 
-    tmp_items.sort_by(|t1, t2| t2.0.partial_cmp(&t1.0).unwrap()); // Sort by float64 value descending
-    // println!("{:?}", tmp_items);
+    tmp_items.sort_by(|t1, t2| {
+        // Sort by float64 value descending
+        t2.0.partial_cmp(&t1.0).unwrap()
+    });
 
     tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
@@ -74,15 +76,64 @@ mod tests {
     #[test]
     fn density_1() {
         let items: Vec<Item> = vec![
-            Item {weight:1, value:3}, // density=3
-            Item {weight:1, value:1}, // density=1
-            Item {weight:6, value:1}, // density=0.16
-            Item {weight:1, value:6}, // density=6
+            Item {value:3, weight:1}, // density=3
+            Item {value:1, weight:6}, // density=0.16
+            Item {value:1, weight:10}, // density=0.10
+            Item {value:1, weight:8}, // density=0.125
+            Item {value:1, weight:1}, // density=1
+            Item {value:6, weight:1}, // density=6
         ];
         let sorted = sort_by_density(&items);
-        let correct: Vec<usize> = vec![3, 0, 1, 2];
+        let correct: Vec<usize> = vec![5, 0, 4, 1, 3, 2];
         for (i, ix) in correct.iter().enumerate() {
             assert!(sorted[i] == items[*ix]);
         }
     }
+
+    #[test]
+    fn density_2() {
+        let items: Vec<Item> = vec![
+            Item {value:60, weight:60},
+            Item {value:60, weight:30},
+            Item {value:60, weight:20},
+            Item {value:60, weight:15},
+            Item {value:60, weight:12},
+            Item {value:60, weight:10},
+            Item {value:60, weight:6},
+            Item {value:60, weight:5},
+            Item {value:60, weight:4},
+            Item {value:60, weight:3},
+            Item {value:60, weight:2},
+            Item {value:60, weight:1},
+        ];
+        let sorted = sort_by_density(&items);
+        let correct: Vec<usize> = vec![11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+        for (i, ix) in correct.iter().enumerate() {
+            assert!(sorted[i] == items[*ix]);
+        }
+    }
+
+    #[test]
+    fn density_3() {
+        let items: Vec<Item> = vec![
+            Item {value:1, weight:60},
+            Item {value:2, weight:60},
+            Item {value:3, weight:60},
+            Item {value:4, weight:60},
+            Item {value:5, weight:60},
+            Item {value:6, weight:60},
+            Item {value:10, weight:60},
+            Item {value:12, weight:62},
+            Item {value:15, weight:65},
+            Item {value:20, weight:60},
+            Item {value:30, weight:60},
+            Item {value:60, weight:60},
+        ];
+        let sorted = sort_by_density(&items);
+        let correct: Vec<usize> = vec![11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+        for (i, ix) in correct.iter().enumerate() {
+            assert!(sorted[i] == items[*ix]);
+        }
+    }
+
 }
