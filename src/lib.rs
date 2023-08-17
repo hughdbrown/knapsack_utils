@@ -15,10 +15,9 @@ impl Item {
 }
 
 pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
-    let mut tmp_items: Vec<(f64, Item)> = vec![];
-    for item in items.iter() {
-        tmp_items.push((item.density(), item.clone())); // Make tuples of float64 and Item
-    }
+    let mut tmp_items: Vec<(f64, Item)> = items.iter()
+        .map(|item: &Item| (item.density(), item.clone())) // Make tuples of float64 and Item
+        .collect::<Vec<(f64, Item)>>();
 
     tmp_items.sort_by(|t1: &(f64, Item), t2: &(f64, Item)| {
         // Sort by float64 value descending
@@ -26,26 +25,10 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
         let density_2: f64 = t2.0;
         density_2.partial_cmp(&density_1).unwrap()
     });
-    for i in 1..tmp_items.len() {
-        let left = &tmp_items[i - 1];
-        let right = &tmp_items[i];
-        if left.0 < right.0 {
-            println!("Error: ({}, {}) {:?} {:?}", i - 1, i, left, right);
-        }
-    }
 
-    let result = tmp_items.into_iter()
+    tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
-        .collect::<Vec::<Item>>(); // Collect the ordered Items
-    for i in 1..result.len() {
-        let left = &result[i - 1];
-        let right = &result[i];
-        if left.density() < right.density() {
-            println!("Error: ({}, {}) {:?} {:?}", i - 1, i, left, right);
-        }
-    }
-
-    result
+        .collect::<Vec::<Item>>() // Collect the ordered Items
 }
 
 pub fn sum_values(items: &[Item]) -> u64 {
