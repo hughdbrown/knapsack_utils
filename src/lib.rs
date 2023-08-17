@@ -46,14 +46,14 @@ pub fn make_items(
     prng: &mut Prng,
     num_items: usize,
     min_value: u64, max_value: u64,
-    min_weight: u64, max_weight: u64,
+    min_weight: usize, max_weight: usize,
 ) -> Vec<Item> {
     let mut items: Vec<Item> = vec![];
     for _ in 0..num_items {
         items.push(make_rand_item(
             prng,
             min_value, max_value,
-            min_weight, max_weight,
+            min_weight as u64, max_weight as u64,
         ));
     }
     items
