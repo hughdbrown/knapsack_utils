@@ -34,9 +34,18 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
         }
     }
 
-    tmp_items.into_iter()
+    let result = tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
-        .collect::<Vec::<Item>>() // Collect the ordered Items
+        .collect::<Vec::<Item>>(); // Collect the ordered Items
+    for i in 1..result.len() {
+        let left = &result[i - 1];
+        let right = &result[i];
+        if left.density() < right.density() {
+            println!("Error: ({}, {}) {:?} {:?}", i - 1, i, left, right);
+        }
+    }
+
+    result
 }
 
 pub fn sum_values(items: &[Item]) -> u64 {
