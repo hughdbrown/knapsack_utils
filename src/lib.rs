@@ -26,6 +26,13 @@ pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
         let density_2: f64 = t2.0;
         density_2.partial_cmp(&density_1).unwrap()
     });
+    for i in 1..tmp_items.len() {
+        let left = &tmp_items[i - 1];
+        let right = &tmp_items[i];
+        if left.0 < right.0 {
+            println!("Error: ({}, {}) {:?} {:?}", i - 1, i, left, right);
+        }
+    }
 
     tmp_items.into_iter()
         .map(|t: (f64, Item)| t.1) // Drop the float64
