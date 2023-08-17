@@ -8,14 +8,19 @@ pub struct Item {
     pub weight: usize,
 }
 
+impl Item {
+    pub fn density(&self) -> f64 {
+        (self.value as f64) / (self.weight as f64)
+    }
+}
+
 pub fn sort_by_density(items: &[Item]) -> Vec<Item> {
     let mut tmp_items: Vec<(f64, Item)> = vec![];
     for item in items.iter() {
-        let density: f64 = (item.value as f64) / (item.weight as f64);
-        tmp_items.push((density, item.clone())); // Make tuples of float64 and Item
+        tmp_items.push((item.density(), item.clone())); // Make tuples of float64 and Item
     }
 
-    tmp_items.sort_by(|t1, t2| {
+    tmp_items.sort_by(|t1: &(f64, Item), t2: &(f64, Item)| {
         // Sort by float64 value descending
         t2.0.partial_cmp(&t1.0).unwrap()
     });
